@@ -1,4 +1,4 @@
-namespace ITI.PL.Models
+namespace ITI.PL.ViewModels
 {
 	public class ErrorViewModel
 	{

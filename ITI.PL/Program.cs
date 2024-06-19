@@ -23,7 +23,7 @@ namespace ITI.PL
 					options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")).UseLazyLoadingProxies();
 				});
 
-			builder.Services.AddScoped(typeof(IDepartmentRepository), typeof(DepartmentRepository));
+			builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
 
 			var app = builder.Build();
 
@@ -47,19 +47,6 @@ namespace ITI.PL
 				pattern: "{controller=Home}/{action=Index}/{id?}");
 
 			app.Run();
-
-
-
-
-
-
-
 		}
 	}
-
-
-
-
-
-
 }

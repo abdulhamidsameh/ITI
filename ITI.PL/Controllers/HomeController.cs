@@ -1,4 +1,4 @@
-using ITI.PL.Models;
+using ITI.PL.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
