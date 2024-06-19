@@ -16,9 +16,9 @@ namespace ITI.DAL.Models
 		public decimal HourRate { get; set; }
 
 		// FK
-		public int DepartmentId { get; set; }
+		public int? DepartmentId { get; set; }
 		// NP
-		virtual public Department Department { get; set; } = null!;
+		virtual public Department? Department { get; set; } = null!;
 
 		// NP
 		virtual public ICollection<CourseInstructor> Courses { get; set; } = new HashSet<CourseInstructor>();

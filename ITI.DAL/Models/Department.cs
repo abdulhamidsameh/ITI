@@ -11,8 +11,8 @@ namespace ITI.DAL.Models
 		public int Id { get; set; }
 		public string Code { get; set; } = null!;
 		public string Name { get; set; } = null!;
-		public DateOnly HiringDate { get; set; }
-		public DateOnly DateOfCreation { get; set; }
+		//public DateTime HiringDate { get; set; }
+		public DateTime DateOfCreation { get; set; }
 
 
 		// NP
@@ -22,8 +22,8 @@ namespace ITI.DAL.Models
 		virtual	public ICollection<Instructor> Instructors { get; set; } = new HashSet<Instructor>();
 
 		// FK
-		public int InstructorId { get; set; }
-		virtual public Instructor Instructor { get; set; } = null!;
+		public int? InstructorId { get; set; }
+		virtual public Instructor? Instructor { get; set; } = null!;
 
     }
 }

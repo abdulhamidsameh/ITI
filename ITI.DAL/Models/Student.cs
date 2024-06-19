@@ -15,9 +15,9 @@ namespace ITI.DAL.Models
 		public int Age { get; set; }
 
 		// FK
-		public int DepartmentId { get; set; }
+		public int? DepartmentId { get; set; }
 		// NP
-		virtual public Department Department { get; set; } = null!;
+		virtual public Department? Department { get; set; } = null!;
 
 		// NP
 		virtual public ICollection<StudentCourse> Courses { get; set; } = new HashSet<StudentCourse>();
