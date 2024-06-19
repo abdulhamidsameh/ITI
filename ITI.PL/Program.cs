@@ -1,6 +1,8 @@
 using ITI.DAL.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace ITI.PL
 {
@@ -45,6 +47,17 @@ namespace ITI.PL
 			app.Run();
 
 
+
+
+
+
+
 		}
 	}
+
+
+
+
+
+
 }

@@ -22,7 +22,8 @@ namespace ITI.DAL.Data.Configrations
 
 			builder.HasOne(D => D.Instructor)
 				.WithOne()
-				.HasForeignKey<Department>(D => D.InstructorId);
+				.HasForeignKey<Department>(D => D.InstructorId)
+				.OnDelete(DeleteBehavior.NoAction);
 				
 		}
 	}
