@@ -1,3 +1,6 @@
+using ITI.DAL.Data;
+using Microsoft.EntityFrameworkCore;
+
 namespace ITI.PL
 {
 	public class Program
@@ -8,6 +11,15 @@ namespace ITI.PL
 
 			// Add services to the container.
 			builder.Services.AddControllersWithViews();
+
+			builder.Services.AddDbContext<ApplicationDbContext>(
+				options =>
+				{
+					options.UseSqlServer("Server=.;Database=ITI;Trusted_Connection=True;Encrypt=False").UseLazyLoadingProxies();
+				}
+				);
+
+
 
 			var app = builder.Build();
 
@@ -31,6 +43,8 @@ namespace ITI.PL
 				pattern: "{controller=Home}/{action=Index}/{id?}");
 
 			app.Run();
+
+
 		}
 	}
 }
