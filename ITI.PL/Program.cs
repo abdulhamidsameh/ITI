@@ -1,5 +1,6 @@
 using ITI.DAL.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace ITI.PL
 {
@@ -15,9 +16,8 @@ namespace ITI.PL
 			builder.Services.AddDbContext<ApplicationDbContext>(
 				options =>
 				{
-					options.UseSqlServer("Server=.;Database=ITI;Trusted_Connection=True;Encrypt=False").UseLazyLoadingProxies();
-				}
-				);
+					options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")).UseLazyLoadingProxies();
+				});
 
 
 
