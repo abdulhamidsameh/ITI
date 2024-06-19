@@ -1,3 +1,5 @@
+using ITI.BLL.Interfaces;
+using ITI.BLL.Repositories;
 using ITI.DAL.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -21,7 +23,7 @@ namespace ITI.PL
 					options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")).UseLazyLoadingProxies();
 				});
 
-
+			builder.Services.AddScoped(typeof(IDepartmentRepository), typeof(DepartmentRepository));
 
 			var app = builder.Build();
 
