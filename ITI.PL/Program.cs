@@ -25,6 +25,8 @@ namespace ITI.PL
 
 			builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
 
+			builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+
 			var app = builder.Build();
 
 			// Configure the HTTP request pipeline.
