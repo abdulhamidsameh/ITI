@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace ITI.DAL.Models
 {
-	public class Course
+	public class Course : BaseEntity
 	{
-		public int Id { get; set; }
 		public string Name { get; set; } = null!;
 		public int Duration { get; set; }
 		public string Description { get; set; } = null!;

@@ -6,10 +6,10 @@ namespace ITI.PL.Controllers
 {
 	public class DepartmentController : Controller
 	{
-		private readonly IDepartmentRepository _departmentRepo;
+		private readonly IGenericRepository<Department> _departmentRepo;
 
 		public DepartmentController(
-			IDepartmentRepository departmentRepo)
+			IGenericRepository<Department> departmentRepo)
 		{
 			_departmentRepo = departmentRepo;
 		}

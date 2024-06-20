@@ -7,8 +7,12 @@ using System.Threading.Tasks;
 
 namespace ITI.BLL.Interfaces
 {
-	public interface IStudentRepository : IGenericRepository<Student>
+	public interface IGenericRepository<T> where T : BaseEntity
 	{
-		IQueryable<Student> GetStudentsByAddress(string address);
+		IEnumerable<T> GetAll();
+		T Get(int id);
+		int Add(T entity);
+		int Update(T entity);
+		int Delete(T entity);
 	}
 }

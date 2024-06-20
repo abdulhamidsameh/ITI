@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace ITI.DAL.Models
 {
-	public class Topic
+	public class Topic : BaseEntity
 	{
-        public int Id { get; set; }
 		public string Name { get; set; } = null!;
 
 		// NP

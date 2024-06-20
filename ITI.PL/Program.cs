@@ -23,9 +23,7 @@ namespace ITI.PL
 					options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")).UseLazyLoadingProxies();
 				});
 
-			builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
-
-			builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+			builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
 			var app = builder.Build();
 

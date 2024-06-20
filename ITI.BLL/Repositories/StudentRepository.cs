@@ -10,40 +10,19 @@ using System.Threading.Tasks;
 
 namespace ITI.BLL.Repositories
 {
-	public class StudentRepository : IStudentRepository
+	public class StudentRepository : GenericRepository<Student>, IStudentRepository
 	{
-		private readonly ApplicationDbContext _dbContext;
 
-		public StudentRepository(ApplicationDbContext dbContext)
-        {
-			_dbContext = dbContext;
-		}
-        public int Add(Student entity)
+		public StudentRepository(ApplicationDbContext dbContext) 
+			: base(dbContext)
 		{
-			_dbContext.Students.Add(entity);
-			return _dbContext.SaveChanges();
 		}
 
-		public int Delete(Student entity)
+		public IQueryable<Student> GetStudentsByAddress(string address)
 		{
-			_dbContext.Students.Remove(entity);
-			return _dbContext.SaveChanges();
+			return _dbContext.Students.Where(S => string.Equals(S.Address, address, StringComparison.OrdinalIgnoreCase));
 		}
 
-		public Student Get(int id)
-		{
-			return _dbContext.Students.Where(S => S.Id == id).Include(S => S.Department).FirstOrDefault()!;
-		}
 
-		public IEnumerable<Student> GetAll()
-		{
-			return _dbContext.Students.AsNoTracking().ToList();
-		}
-
-		public int Update(Student entity)
-		{
-			_dbContext.Students.Update(entity);
-			return _dbContext.SaveChanges();
-		}
 	}
 }
