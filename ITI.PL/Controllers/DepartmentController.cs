@@ -8,7 +8,8 @@ namespace ITI.PL.Controllers
 	{
 		private readonly IDepartmentRepository _departmentRepo;
 
-		public DepartmentController(IDepartmentRepository departmentRepo)
+		public DepartmentController(
+			IDepartmentRepository departmentRepo)
 		{
 			_departmentRepo = departmentRepo;
 		}
@@ -36,16 +37,14 @@ namespace ITI.PL.Controllers
 				var Count = _departmentRepo.Add(model);
 				if (Count > 0)
 					return RedirectToAction(nameof(Index));
-
 			}
-
 			return View(model);
 
 		}
 
 		// baseUrl/Department/Details/id?
 		[HttpGet]
-		public IActionResult Details(int? id)
+		public IActionResult Details(int? id, string viewName = "Details")
 		{
 			if (!id.HasValue)
 				return BadRequest();
@@ -55,7 +54,25 @@ namespace ITI.PL.Controllers
 			if (department is null)
 				return NotFound();
 
-			return View(department);
+			return View(viewName, department);
+
+		}
+
+		// BaseUrl/Department/Edit/id?
+		[HttpGet]
+		public IActionResult Edit(int? id)
+		{
+			return Details(id, "Edit");
+		}
+
+		[HttpPost]
+		public IActionResult Edit(Department model)
+		{
+			if (!ModelState.IsValid)
+				return View(model);
+
+			_departmentRepo.Update(model);
+			return RedirectToAction(nameof(Index));
 
 		}
 	}

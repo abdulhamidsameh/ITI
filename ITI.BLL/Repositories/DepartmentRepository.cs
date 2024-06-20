@@ -32,11 +32,8 @@ namespace ITI.BLL.Repositories
 
 		public Department Get(int id)
 		{
-			//return _dbContext.Find<Department>(id)!;
-			var department = _dbContext.Departments.Local.Where(D => D.Id == id).FirstOrDefault();
-			if (department is null)
-				department = _dbContext.Departments.Where(D => D.Id == id).Include(D => D.Instructor).FirstOrDefault();
-			return department!;
+			return _dbContext.Departments.Where(D => D.Id == id).Include(D => D.Instructor).FirstOrDefault()!;
+			
 		}
 
 		public IEnumerable<Department> GetAll()
