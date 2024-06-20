@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ITI.PL.Controllers
 {
-	[ValidateAntiForgeryToken]
 	public class DepartmentController : Controller
 	{
 		private readonly IDepartmentRepository _departmentRepo;
@@ -67,6 +66,7 @@ namespace ITI.PL.Controllers
 		}
 
 		[HttpPost]
+		[ValidateAntiForgeryToken]
 		public IActionResult Edit(Department model)
 		{
 			if (!ModelState.IsValid)
@@ -75,6 +75,20 @@ namespace ITI.PL.Controllers
 			_departmentRepo.Update(model);
 			return RedirectToAction(nameof(Index));
 
+		}
+
+		// BaseUrl/Department/id?
+		[HttpGet]
+		public IActionResult Delete(int? id)
+		{
+			return Details(id, "Delete");
+		}
+
+		[HttpPost]
+		public IActionResult Delete(Department model)
+		{
+			_departmentRepo.Delete(model);
+			return RedirectToAction(nameof(Index));
 		}
 	}
 }
