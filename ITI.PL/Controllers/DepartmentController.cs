@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ITI.PL.Controllers
 {
+	[ValidateAntiForgeryToken]
 	public class DepartmentController : Controller
 	{
 		private readonly IDepartmentRepository _departmentRepo;
