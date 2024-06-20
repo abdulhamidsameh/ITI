@@ -77,7 +77,7 @@ namespace ITI.PL.Controllers
 
 		}
 
-		// BaseUrl/Department/id?
+		// BaseUrl/Department/Delete/id?
 		[HttpGet]
 		public IActionResult Delete(int? id)
 		{
