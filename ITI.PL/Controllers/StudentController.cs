@@ -34,6 +34,7 @@ namespace ITI.PL.Controllers
 			if (ModelState.IsValid)
 			{
 				_repository.Add(model);
+				TempData["Message"] = "Student Added Successfully";
 				return RedirectToAction(nameof(Index));
 			}
 			return View(model);
@@ -67,6 +68,7 @@ namespace ITI.PL.Controllers
 				return View(model);
 
 			_repository.Update(model);
+			TempData["Message"] = "Student Updated Successfully";
 			return RedirectToAction(nameof(Index));
 
 		}
@@ -82,6 +84,7 @@ namespace ITI.PL.Controllers
 		public IActionResult Delete(Student model)
 		{
 			_repository.Delete(model);
+			TempData["Message"] = "Student Deleted Successfully";
 			return RedirectToAction(nameof(Index));
 		}
 	}

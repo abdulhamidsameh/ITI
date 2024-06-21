@@ -7,7 +7,12 @@
 
 <br />
 <br />
-
+@if(TempData["Message"] is not null)
+{
+	<div class="alert alert-success">
+		@TempData["Message"]
+	</div>
+}
 <a class="btn btn-primary" asp-controller="Department" asp-action="Create">Create New Departments</a>
 
 <br />

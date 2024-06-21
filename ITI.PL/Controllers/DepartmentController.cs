@@ -36,7 +36,10 @@ namespace ITI.PL.Controllers
 			{
 				var Count = _departmentRepo.Add(model);
 				if (Count > 0)
+				{
+					TempData["Message"] = "Department Created Successfully";
 					return RedirectToAction(nameof(Index));
+				}
 			}
 			return View(model);
 
@@ -73,6 +76,8 @@ namespace ITI.PL.Controllers
 				return View(model);
 
 			_departmentRepo.Update(model);
+			TempData["Message"] = "Department Updated Successfully";
+
 			return RedirectToAction(nameof(Index));
 
 		}
@@ -88,6 +93,8 @@ namespace ITI.PL.Controllers
 		public IActionResult Delete(Department model)
 		{
 			_departmentRepo.Delete(model);
+			TempData["Message"] = "Department Deleted Successfully";
+
 			return RedirectToAction(nameof(Index));
 		}
 	}

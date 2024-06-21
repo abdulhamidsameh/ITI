@@ -6,6 +6,13 @@
 
 <h1>All Students</h1>
 
+@if (TempData["Message"] is not null)
+{
+	<div class="alert alert-success">
+		@TempData["Message"]
+	</div>
+}
+
 <br />
 <br />
 
@@ -47,7 +54,7 @@
 					<td>@student.Email</td>
 					<th>@student.PhoneNumber</th>
 					<partial name="_ButtonsPartial" model="student.Id"></partial>
-					
+
 				</tr>
 			}
 
