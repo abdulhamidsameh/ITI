@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ITI.DAL.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -20,9 +21,11 @@ namespace ITI.DAL.Models
 		[Required]
 
 		public int Age { get; set; }
-
-		// FK
-		public int? DepartmentId { get; set; }
+		public string Email { get; set; } = null!;
+        public bool IsActive { get; set; }
+		public string PhoneNumber { get; set; } = null!;
+        // FK
+        public int? DepartmentId { get; set; }
 		// NP
 		virtual public Department? Department { get; set; } = null!;
 

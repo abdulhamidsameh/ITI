@@ -20,10 +20,13 @@
 		<thead>
 
 			<tr>
-				<th>@Html.DisplayNameFor(D => D.FirstName)</th>
-				<th>@Html.DisplayNameFor(D => D.LastName)</th>
-				<th>@Html.DisplayNameFor(D => D.Address)</th>
-				<th>@Html.DisplayNameFor(D => D.Age)</th>
+				<th>@Html.DisplayNameFor(S => S.FirstName)</th>
+				<th>@Html.DisplayNameFor(S => S.LastName)</th>
+				<th>@Html.DisplayNameFor(S => S.Address)</th>
+				<th>@Html.DisplayNameFor(S => S.Age)</th>
+				<th>@Html.DisplayNameFor(S => S.IsActive)</th>
+				<th>@Html.DisplayNameFor(S => S.Email)</th>
+				<th>@Html.DisplayNameFor(S => S.PhoneNumber)</th>
 				<td>Details</td>
 				<td>Update</td>
 				<td>Delete</td>
@@ -40,6 +43,9 @@
 					<td>@student.LastName</td>
 					<td>@student.Address</td>
 					<td>@student.Age</td>
+					<td>@student.IsActive</td>
+					<td>@student.Email</td>
+					<th>@student.PhoneNumber</th>
 					<partial name="_ButtonsPartial" model="student.Id"></partial>
 					
 				</tr>
