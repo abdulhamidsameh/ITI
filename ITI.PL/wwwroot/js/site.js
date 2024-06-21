@@ -2,3 +2,8 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
+
+function Change() {
+    var div = document.getElementById("myDiv");
+    div.style.display = "none";
+}
