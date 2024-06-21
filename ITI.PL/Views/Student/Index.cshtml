@@ -37,6 +37,7 @@
 				<th>@Html.DisplayNameFor(S => S.IsActive)</th>
 				<th>@Html.DisplayNameFor(S => S.Email)</th>
 				<th>@Html.DisplayNameFor(S => S.PhoneNumber)</th>
+				<th>@Html.DisplayNameFor(S => S.Department)</th>
 				<td>Details</td>
 				<td>Update</td>
 				<td>Delete</td>
@@ -56,6 +57,7 @@
 					<td>@student.IsActive</td>
 					<td>@student.Email</td>
 					<th>@student.PhoneNumber</th>
+					<th>@student.Department?.Name</th>
 					<partial name="_ButtonsPartial" model="student.Id"></partial>
 
 				</tr>

@@ -6,18 +6,18 @@ namespace ITI.PL.Controllers
 {
 	public class StudentController : Controller
 	{
-		private readonly IStudentRepository _repository;
+		private readonly IStudentRepository _studentrepo;
 
-		public StudentController(IStudentRepository repository)
+		public StudentController(IStudentRepository StudentRepository)
         {
-			_repository = repository;
+			_studentrepo = StudentRepository;
 		}
 
 		// BaseUrl/Student/Index
 		[HttpGet]
         public IActionResult Index()
 		{
-			var students = _repository.GetAll();
+			var students = _studentrepo.GetAll();
 			return View(students);
 		}
 
@@ -33,7 +33,7 @@ namespace ITI.PL.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				_repository.Add(model);
+				_studentrepo.Add(model);
 				TempData["Message"] = "Student Added Successfully";
 				return RedirectToAction(nameof(Index));
 			}
@@ -46,7 +46,7 @@ namespace ITI.PL.Controllers
 		{
 			if (!id.HasValue)
 				return BadRequest();
-			var student = _repository.Get(id.Value);
+			var student = _studentrepo.Get(id.Value);
 
 			if(student is null)
 				return NotFound();
@@ -57,6 +57,7 @@ namespace ITI.PL.Controllers
 		[HttpGet]
 		public IActionResult Edit(int? id)
 		{
+
 			return Details(id, "Edit");
 		}
 
@@ -67,7 +68,7 @@ namespace ITI.PL.Controllers
 			if(!ModelState.IsValid)
 				return View(model);
 
-			_repository.Update(model);
+			_studentrepo.Update(model);
 			TempData["Message"] = "Student Updated Successfully";
 			return RedirectToAction(nameof(Index));
 
@@ -83,7 +84,7 @@ namespace ITI.PL.Controllers
 		[HttpPost]
 		public IActionResult Delete(Student model)
 		{
-			_repository.Delete(model);
+			_studentrepo.Delete(model);
 			TempData["Message"] = "Student Deleted Successfully";
 			return RedirectToAction(nameof(Index));
 		}

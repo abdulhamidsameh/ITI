@@ -18,7 +18,8 @@ namespace ITI.DAL.Data.Configrations
 			builder.Property(S => S.Address).IsRequired().HasMaxLength(50).HasColumnType("varchar");
 			builder.HasOne(S => S.Department)
 				.WithMany(D => D.Students)
-				.HasForeignKey(S => S.DepartmentId);
+				.HasForeignKey(S => S.DepartmentId)
+				.OnDelete(DeleteBehavior.Cascade);
 		}
 	}
 }
