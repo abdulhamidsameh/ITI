@@ -1,6 +1,7 @@
 using ITI.BLL.Interfaces;
 using ITI.BLL.Repositories;
 using ITI.DAL.Data;
+using ITI.PL.Extenshions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Security.Cryptography;
@@ -15,17 +16,13 @@ namespace ITI.PL
 			var builder = WebApplication.CreateBuilder(args);
 
 			// Add services to the container.
-			builder.Services.AddControllersWithViews();
-
 			builder.Services.AddDbContext<ApplicationDbContext>(
 				options =>
 				{
 					options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")).UseLazyLoadingProxies();
 				});
 
-			builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-
-			builder.Services.AddScoped(typeof(IStudentRepository), typeof(StudentRepository));
+			builder.Services.ApplicationServices();
 
 			var app = builder.Build();
 
