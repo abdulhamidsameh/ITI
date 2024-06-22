@@ -9,6 +9,7 @@ namespace ITI.PL.Helpers
         public MappingProfiles()
         {
             CreateMap<Student,StudentViewModel>().ReverseMap();
+            CreateMap<Department,DepartmentViewModel>().ReverseMap();
         }
     }
 }

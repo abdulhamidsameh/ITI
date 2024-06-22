@@ -1,5 +1,7 @@
-﻿using ITI.BLL.Interfaces;
+﻿using AutoMapper;
+using ITI.BLL.Interfaces;
 using ITI.DAL.Models;
+using ITI.PL.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ITI.PL.Controllers
@@ -7,11 +9,14 @@ namespace ITI.PL.Controllers
 	public class DepartmentController : Controller
 	{
 		private readonly IGenericRepository<Department> _departmentRepo;
+		private readonly IMapper _mapper;
 
 		public DepartmentController(
-			IGenericRepository<Department> departmentRepo)
+			IGenericRepository<Department> departmentRepo,
+			IMapper mapper)
 		{
 			_departmentRepo = departmentRepo;
+			_mapper = mapper;
 		}
 
 		// baseUrl/Department/Index
@@ -19,7 +24,8 @@ namespace ITI.PL.Controllers
 		public IActionResult Index()
 		{
 			var departments = _departmentRepo.GetAll();
-			return View(departments);
+			var departmentsVM = _mapper.Map<IEnumerable<Department>, IEnumerable<DepartmentViewModel>>(departments);
+			return View(departmentsVM);
 		}
 
 		// baseUrl/Department/Create
@@ -30,18 +36,19 @@ namespace ITI.PL.Controllers
 		}
 
 		[HttpPost]
-		public IActionResult Create(Department model)
+		public IActionResult Create(DepartmentViewModel departmentVM)
 		{
 			if (ModelState.IsValid)
 			{
-				var Count = _departmentRepo.Add(model);
+				var department = _mapper.Map<DepartmentViewModel, Department>(departmentVM);
+				var Count = _departmentRepo.Add(department);
 				if (Count > 0)
 				{
 					TempData["Message"] = "Department Created Successfully";
 					return RedirectToAction(nameof(Index));
 				}
 			}
-			return View(model);
+			return View(departmentVM);
 
 		}
 
@@ -57,7 +64,9 @@ namespace ITI.PL.Controllers
 			if (department is null)
 				return NotFound();
 
-			return View(viewName, department);
+			var departmentVM = _mapper.Map<Department, DepartmentViewModel>(department);
+
+			return View(viewName, departmentVM);
 
 		}
 
@@ -70,12 +79,14 @@ namespace ITI.PL.Controllers
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public IActionResult Edit(Department model)
+		public IActionResult Edit(DepartmentViewModel departmentVM)
 		{
 			if (!ModelState.IsValid)
-				return View(model);
+				return View(departmentVM);
 
-			_departmentRepo.Update(model);
+			var department = _mapper.Map<DepartmentViewModel, Department>(departmentVM);
+
+			_departmentRepo.Update(department);
 			TempData["Message"] = "Department Updated Successfully";
 
 			return RedirectToAction(nameof(Index));
@@ -90,9 +101,10 @@ namespace ITI.PL.Controllers
 		}
 
 		[HttpPost]
-		public IActionResult Delete(Department model)
+		public IActionResult Delete(DepartmentViewModel departmentVM)
 		{
-			_departmentRepo.Delete(model);
+			var department = _mapper.Map<DepartmentViewModel, Department>(departmentVM);
+			_departmentRepo.Delete(department);
 			TempData["Message"] = "Department Deleted Successfully";
 
 			return RedirectToAction(nameof(Index));

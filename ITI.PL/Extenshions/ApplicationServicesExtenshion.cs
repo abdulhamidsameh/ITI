@@ -12,7 +12,7 @@ namespace ITI.PL.Extenshions
 		{
 			services.AddControllersWithViews();
 
-			services.AddScoped(typeof(IGenericRepository<Department>), typeof(GenericRepository<Department>));
+			services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
 			services.AddScoped(typeof(IStudentRepository), typeof(StudentRepository));
 
