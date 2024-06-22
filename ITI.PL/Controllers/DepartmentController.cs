@@ -8,14 +8,14 @@ namespace ITI.PL.Controllers
 {
 	public class DepartmentController : Controller
 	{
-		private readonly IGenericRepository<Department> _departmentRepo;
+		private readonly IUnitOfWork _unitOfWork;
 		private readonly IMapper _mapper;
 
 		public DepartmentController(
-			IGenericRepository<Department> departmentRepo,
+			IUnitOfWork unitOfWork,
 			IMapper mapper)
 		{
-			_departmentRepo = departmentRepo;
+			_unitOfWork = unitOfWork;
 			_mapper = mapper;
 		}
 
@@ -23,7 +23,7 @@ namespace ITI.PL.Controllers
 		[HttpGet]
 		public IActionResult Index()
 		{
-			var departments = _departmentRepo.GetAll();
+			var departments = _unitOfWork.Repository<Department>().GetAll();
 			var departmentsVM = _mapper.Map<IEnumerable<Department>, IEnumerable<DepartmentViewModel>>(departments);
 			return View(departmentsVM);
 		}
@@ -41,12 +41,11 @@ namespace ITI.PL.Controllers
 			if (ModelState.IsValid)
 			{
 				var department = _mapper.Map<DepartmentViewModel, Department>(departmentVM);
-				var Count = _departmentRepo.Add(department);
-				if (Count > 0)
-				{
-					TempData["Message"] = "Department Created Successfully";
+				_unitOfWork.Repository<Department>().Add(department);
+				TempData["Message"] = "Department Created Successfully";
+				var count = _unitOfWork.Complete();
+				if (count > 0)
 					return RedirectToAction(nameof(Index));
-				}
 			}
 			return View(departmentVM);
 
@@ -59,7 +58,7 @@ namespace ITI.PL.Controllers
 			if (!id.HasValue)
 				return BadRequest();
 
-			var department = _departmentRepo.Get(id.Value);
+			var department = _unitOfWork.Repository<Department>().Get(id.Value);
 
 			if (department is null)
 				return NotFound();
@@ -86,10 +85,16 @@ namespace ITI.PL.Controllers
 
 			var department = _mapper.Map<DepartmentViewModel, Department>(departmentVM);
 
-			_departmentRepo.Update(department);
+			_unitOfWork.Repository<Department>().Update(department);
 			TempData["Message"] = "Department Updated Successfully";
+			
+			var count = _unitOfWork.Complete();
 
-			return RedirectToAction(nameof(Index));
+			if(count > 0)
+				return RedirectToAction(nameof(Index));
+
+
+			return View(departmentVM);
 
 		}
 
@@ -104,10 +109,14 @@ namespace ITI.PL.Controllers
 		public IActionResult Delete(DepartmentViewModel departmentVM)
 		{
 			var department = _mapper.Map<DepartmentViewModel, Department>(departmentVM);
-			_departmentRepo.Delete(department);
+			_unitOfWork.Repository<Department>().Delete(department);
 			TempData["Message"] = "Department Deleted Successfully";
-
-			return RedirectToAction(nameof(Index));
+		
+			var count =_unitOfWork.Complete();
+			if (count > 0)
+				return RedirectToAction(nameof(Index));
+			
+			return View(departmentVM);
 		}
 	}
 }

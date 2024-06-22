@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 
 namespace ITI.BLL.Repositories
 {
-	public class StudentRepository : GenericRepository<Student>, IStudentRepository
+	public class StudentRepository : GenericRepository<Student>, IStudentRepository, IGenericRepository<Student>
 	{
 
-		public StudentRepository(ApplicationDbContext dbContext) 
+		public StudentRepository(ApplicationDbContext dbContext)
 			: base(dbContext)
 		{
 		}

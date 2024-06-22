@@ -18,17 +18,13 @@ namespace ITI.BLL.Repositories
 		{
 			_dbContext = dbContext;
 		}
-		public int Add(T entity)
-		{
-			_dbContext.Add(entity);
-			return _dbContext.SaveChanges();
-		}
+		public void Add(T entity)
+			=> _dbContext.Add(entity);
 
-		public int Delete(T entity)
-		{
-			_dbContext.Remove(entity);
-			return _dbContext.SaveChanges();
-		}
+
+		public void Delete(T entity)
+			=> _dbContext.Remove(entity);
+
 
 		public T Get(int id)
 		{
@@ -41,10 +37,8 @@ namespace ITI.BLL.Repositories
 			return _dbContext.Set<T>().AsNoTracking().ToList();
 		}
 
-		public int Update(T entity)
-		{
-			_dbContext.Update(entity);
-			return _dbContext.SaveChanges();
-		}
+		public void Update(T entity)
+			=> _dbContext.Update(entity);
+
 	}
 }

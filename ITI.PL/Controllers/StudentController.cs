@@ -8,22 +8,23 @@ namespace ITI.PL.Controllers
 {
 	public class StudentController : Controller
 	{
-		private readonly IStudentRepository _studentrepo;
+		private readonly IUnitOfWork _unitOfWork;
 		private readonly IMapper _mapper;
 
-		public StudentController(IStudentRepository StudentRepository,
+		public StudentController(
+			IUnitOfWork unitOfWork,
 			IMapper mapper)
-        {
-			_studentrepo = StudentRepository;
+		{
+			_unitOfWork = unitOfWork;
 			_mapper = mapper;
 		}
 
 		// BaseUrl/Student/Index
 		[HttpGet]
-        public IActionResult Index()
+		public IActionResult Index()
 		{
-			var students = _studentrepo.GetAll();
-			var studentsVM = _mapper.Map<IEnumerable<Student>,IEnumerable<StudentViewModel>>(students);
+			var students = _unitOfWork.Repository<Student>().GetAll();
+			var studentsVM = _mapper.Map<IEnumerable<Student>, IEnumerable<StudentViewModel>>(students);
 			return View(studentsVM);
 		}
 
@@ -39,25 +40,27 @@ namespace ITI.PL.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				var model = _mapper.Map<StudentViewModel,Student>(studentVM);
-				_studentrepo.Add(model);
+				var model = _mapper.Map<StudentViewModel, Student>(studentVM);
+				_unitOfWork.Repository<Student>().Add(model);
 				TempData["Message"] = "Student Added Successfully";
-				return RedirectToAction(nameof(Index));
+				var count = _unitOfWork.Complete();
+				if (count > 0)
+					return RedirectToAction(nameof(Index));
 			}
 			return View(studentVM);
 		}
 
 		// BaseUrl/Student/Details/id?
 		[HttpGet]
-		public IActionResult Details(int? id,string viewName="Details")
+		public IActionResult Details(int? id, string viewName = "Details")
 		{
 			if (!id.HasValue)
 				return BadRequest();
-			var student = _studentrepo.Get(id.Value);
+			var student = _unitOfWork.Repository<Student>().Get(id.Value);
 
-			if(student is null)
+			if (student is null)
 				return NotFound();
-			var studentVM = _mapper.Map<Student,StudentViewModel>(student);
+			var studentVM = _mapper.Map<Student, StudentViewModel>(student);
 			return View(viewName, studentVM);
 		}
 
@@ -73,19 +76,24 @@ namespace ITI.PL.Controllers
 		[ValidateAntiForgeryToken]
 		public IActionResult Edit(StudentViewModel studentVM)
 		{
-			if(!ModelState.IsValid)
+			if (!ModelState.IsValid)
 				return View(studentVM);
 
-			var student = _mapper.Map<StudentViewModel,Student>(studentVM);
-			_studentrepo.Update(student);
+			var student = _mapper.Map<StudentViewModel, Student>(studentVM);
+			_unitOfWork.Repository<Student>().Update(student);
 			TempData["Message"] = "Student Updated Successfully";
-			return RedirectToAction(nameof(Index));
+
+			var count = _unitOfWork.Complete();
+			if (count > 0)
+				return RedirectToAction(nameof(Index));
+
+			return View(studentVM);
 
 		}
 
 		// BaseUrl/Student/Delete/id?
 		[HttpGet]
-		public IActionResult Delete(int? id) 
+		public IActionResult Delete(int? id)
 		{
 			return Details(id, "Delete");
 		}
@@ -93,10 +101,15 @@ namespace ITI.PL.Controllers
 		[HttpPost]
 		public IActionResult Delete(StudentViewModel studentVM)
 		{
-			var student = _mapper.Map<StudentViewModel,Student>(studentVM);
-			_studentrepo.Delete(student);
+			var student = _mapper.Map<StudentViewModel, Student>(studentVM);
+			_unitOfWork.Repository<Student>().Delete(student);
 			TempData["Message"] = "Student Deleted Successfully";
-			return RedirectToAction(nameof(Index));
+
+			var count = _unitOfWork.Complete();
+			if (count > 0)
+				return RedirectToAction(nameof(Index));
+
+			return View(studentVM);
 		}
 	}
 }

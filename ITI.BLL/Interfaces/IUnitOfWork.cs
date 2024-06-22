@@ -7,12 +7,9 @@ using System.Threading.Tasks;
 
 namespace ITI.BLL.Interfaces
 {
-	public interface IGenericRepository<T> where T : BaseEntity
+	public interface IUnitOfWork : IDisposable
 	{
-		IEnumerable<T> GetAll();
-		T Get(int id);
-		void Add(T entity);
-		void Update(T entity);
-		void Delete(T entity);
+		public IGenericRepository<T> Repository<T>() where T : BaseEntity;
+		public int Complete();
 	}
 }

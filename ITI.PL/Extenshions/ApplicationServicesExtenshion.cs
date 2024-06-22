@@ -1,4 +1,5 @@
-﻿using ITI.BLL.Interfaces;
+﻿using ITI.BLL;
+using ITI.BLL.Interfaces;
 using ITI.BLL.Repositories;
 using ITI.DAL.Data;
 using ITI.DAL.Models;
@@ -12,9 +13,7 @@ namespace ITI.PL.Extenshions
 		{
 			services.AddControllersWithViews();
 
-			services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-
-			services.AddScoped(typeof(IStudentRepository), typeof(StudentRepository));
+			services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 			services.AddAutoMapper(M => M.AddProfile(new MappingProfiles()));
 

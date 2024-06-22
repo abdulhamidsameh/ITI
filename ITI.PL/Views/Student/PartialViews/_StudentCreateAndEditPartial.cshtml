@@ -1,7 +1,7 @@
 ﻿@model StudentViewModel
-@inject IGenericRepository<Department> _departmentRepo;
+@inject IUnitOfWork _unitOfWork;
 @{
-	var departments = new SelectList(_departmentRepo.GetAll(), nameof(Department.Id), nameof(Department.Name));
+	var departments = new SelectList(_unitOfWork.Repository<Department>().GetAll(), nameof(Department.Id), nameof(Department.Name));
 }
 @*
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
