@@ -23,6 +23,5 @@ namespace ITI.BLL.Repositories
 			return _dbContext.Students.Where(S => string.Equals(S.Address, address, StringComparison.OrdinalIgnoreCase));
 		}
 
-
 	}
 }

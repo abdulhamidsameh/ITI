@@ -19,7 +19,7 @@ namespace ITI.DAL.Data.Configrations
 			builder.HasOne(S => S.Department)
 				.WithMany(D => D.Students)
 				.HasForeignKey(S => S.DepartmentId)
-				.OnDelete(DeleteBehavior.Cascade);
+				.OnDelete(DeleteBehavior.SetNull);
 		}
 	}
 }

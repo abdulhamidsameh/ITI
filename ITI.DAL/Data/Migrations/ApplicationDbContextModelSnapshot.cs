@@ -53,7 +53,7 @@ namespace ITI.DAL.Data.Migrations
 
                     b.HasIndex("TopicId");
 
-                    b.ToTable("Courses");
+                    b.ToTable("Courses", (string)null);
                 });
 
             modelBuilder.Entity("ITI.DAL.Models.CourseInstructor", b =>
@@ -74,7 +74,7 @@ namespace ITI.DAL.Data.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.ToTable("CourseInstructors");
+                    b.ToTable("CourseInstructors", (string)null);
                 });
 
             modelBuilder.Entity("ITI.DAL.Models.Department", b =>
@@ -107,7 +107,7 @@ namespace ITI.DAL.Data.Migrations
                         .IsUnique()
                         .HasFilter("[InstructorId] IS NOT NULL");
 
-                    b.ToTable("Departments");
+                    b.ToTable("Departments", (string)null);
                 });
 
             modelBuilder.Entity("ITI.DAL.Models.Instructor", b =>
@@ -144,7 +144,7 @@ namespace ITI.DAL.Data.Migrations
 
                     b.HasIndex("DepartmentId");
 
-                    b.ToTable("Instructors");
+                    b.ToTable("Instructors", (string)null);
                 });
 
             modelBuilder.Entity("ITI.DAL.Models.Student", b =>
@@ -191,7 +191,7 @@ namespace ITI.DAL.Data.Migrations
 
                     b.HasIndex("DepartmentId");
 
-                    b.ToTable("Students");
+                    b.ToTable("Students", (string)null);
                 });
 
             modelBuilder.Entity("ITI.DAL.Models.StudentCourse", b =>
@@ -212,7 +212,7 @@ namespace ITI.DAL.Data.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.ToTable("StudentCourses");
+                    b.ToTable("StudentCourses", (string)null);
                 });
 
             modelBuilder.Entity("ITI.DAL.Models.Topic", b =>
@@ -230,7 +230,7 @@ namespace ITI.DAL.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Topics");
+                    b.ToTable("Topics", (string)null);
                 });
 
             modelBuilder.Entity("ITI.DAL.Models.Course", b =>

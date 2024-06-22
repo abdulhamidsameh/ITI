@@ -1,5 +1,7 @@
-﻿using ITI.BLL.Interfaces;
+﻿using AutoMapper;
+using ITI.BLL.Interfaces;
 using ITI.DAL.Models;
+using ITI.PL.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ITI.PL.Controllers
@@ -7,10 +9,13 @@ namespace ITI.PL.Controllers
 	public class StudentController : Controller
 	{
 		private readonly IStudentRepository _studentrepo;
+		private readonly IMapper _mapper;
 
-		public StudentController(IStudentRepository StudentRepository)
+		public StudentController(IStudentRepository StudentRepository,
+			IMapper mapper)
         {
 			_studentrepo = StudentRepository;
+			_mapper = mapper;
 		}
 
 		// BaseUrl/Student/Index
@@ -18,7 +23,8 @@ namespace ITI.PL.Controllers
         public IActionResult Index()
 		{
 			var students = _studentrepo.GetAll();
-			return View(students);
+			var studentsVM = _mapper.Map<IEnumerable<Student>,IEnumerable<StudentViewModel>>(students);
+			return View(studentsVM);
 		}
 
 		// BaseUrl/Student/Create
@@ -29,15 +35,16 @@ namespace ITI.PL.Controllers
 		}
 
 		[HttpPost]
-		public IActionResult Create(Student model) 
+		public IActionResult Create(StudentViewModel studentVM)
 		{
 			if (ModelState.IsValid)
 			{
+				var model = _mapper.Map<StudentViewModel,Student>(studentVM);
 				_studentrepo.Add(model);
 				TempData["Message"] = "Student Added Successfully";
 				return RedirectToAction(nameof(Index));
 			}
-			return View(model);
+			return View(studentVM);
 		}
 
 		// BaseUrl/Student/Details/id?
@@ -50,7 +57,8 @@ namespace ITI.PL.Controllers
 
 			if(student is null)
 				return NotFound();
-			return View(viewName,student);
+			var studentVM = _mapper.Map<Student,StudentViewModel>(student);
+			return View(viewName, studentVM);
 		}
 
 		// BaseUrl/Student/Edit/id?
@@ -63,12 +71,13 @@ namespace ITI.PL.Controllers
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public IActionResult Edit(Student model)
+		public IActionResult Edit(StudentViewModel studentVM)
 		{
 			if(!ModelState.IsValid)
-				return View(model);
+				return View(studentVM);
 
-			_studentrepo.Update(model);
+			var student = _mapper.Map<StudentViewModel,Student>(studentVM);
+			_studentrepo.Update(student);
 			TempData["Message"] = "Student Updated Successfully";
 			return RedirectToAction(nameof(Index));
 
@@ -82,9 +91,10 @@ namespace ITI.PL.Controllers
 		}
 
 		[HttpPost]
-		public IActionResult Delete(Student model)
+		public IActionResult Delete(StudentViewModel studentVM)
 		{
-			_studentrepo.Delete(model);
+			var student = _mapper.Map<StudentViewModel,Student>(studentVM);
+			_studentrepo.Delete(student);
 			TempData["Message"] = "Student Deleted Successfully";
 			return RedirectToAction(nameof(Index));
 		}
