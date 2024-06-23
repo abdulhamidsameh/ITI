@@ -17,6 +17,7 @@ namespace ITI.DAL.Models
 		public string Email { get; set; } = null!;
         public bool IsActive { get; set; }
 		public string PhoneNumber { get; set; } = null!;
+		public string ImageName { get; set; } = null!;
         // FK
         public int? DepartmentId { get; set; }
 		// NP

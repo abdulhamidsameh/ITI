@@ -8,9 +8,13 @@
 <br />
 <br />
 
-<form asp-action="Create">
+<form asp-action="Create" enctype="multipart/form-data">
 	<partial name="PartialViews/_StudentCreateAndEditPartial"></partial>
+	<div class="form-group">
+		<label class="col-form-label" asp-for="Image"></label>
+		<input asp-for="Image" class="form-control-file" />
 
+	</div>
 	<div class="form-group mt-3">
 		<input type="submit" value="Create" class="btn btn-primary" /> |
 		<a asp-action="Index" class="btn btn-light">Back To List</a>

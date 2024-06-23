@@ -30,6 +30,7 @@
 		<thead>
 
 			<tr>
+				<th>@Html.DisplayNameFor(S => S.Image)</th>
 				<th>@Html.DisplayNameFor(S => S.FirstName)</th>
 				<th>@Html.DisplayNameFor(S => S.LastName)</th>
 				<th>@Html.DisplayNameFor(S => S.Address)</th>
@@ -50,6 +51,9 @@
 			@foreach (var student in Model)
 			{
 				<tr>
+					<td>
+							<img src="~/Files/Images/@student.ImageName" alt="@student.FirstName @student.LastName" class="img-fluid rounded-circle w-50" />
+					</td>
 					<td>@student.FirstName</td>
 					<td>@student.LastName</td>
 					<td>@student.Address</td>

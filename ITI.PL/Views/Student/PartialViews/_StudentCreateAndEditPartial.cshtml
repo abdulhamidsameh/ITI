@@ -1,6 +1,7 @@
 ﻿@model StudentViewModel
 @inject IUnitOfWork _unitOfWork;
 @{
+
 	var departments = new SelectList(_unitOfWork.Repository<Department>().GetAll(), nameof(Department.Id), nameof(Department.Name));
 }
 @*
@@ -48,6 +49,8 @@
 	<span asp-validation-for="PhoneNumber" class="text-danger"></span>
 
 </div>
+
+
 
 <div class="form-group">
 	<label class="col-form-label" asp-for="Department"></label>

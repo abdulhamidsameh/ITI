@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using ITI.BLL.Interfaces;
 using ITI.DAL.Models;
-using ITI.PL.ViewModels;
+using ITI.PL.Helpers;
+using ITI.PL.ViewModels.Student;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection.Metadata;
 
 namespace ITI.PL.Controllers
 {
@@ -38,6 +40,10 @@ namespace ITI.PL.Controllers
 		[HttpPost]
 		public IActionResult Create(StudentViewModel studentVM)
 		{
+			var imageName = DocumentSetting.UploadFile(studentVM.Image, "Images");
+
+			studentVM.ImageName = imageName;
+
 			if (ModelState.IsValid)
 			{
 				var model = _mapper.Map<StudentViewModel, Student>(studentVM);
@@ -46,6 +52,8 @@ namespace ITI.PL.Controllers
 				var count = _unitOfWork.Complete();
 				if (count > 0)
 					return RedirectToAction(nameof(Index));
+
+
 			}
 			return View(studentVM);
 		}
@@ -73,9 +81,10 @@ namespace ITI.PL.Controllers
 		}
 
 		[HttpPost]
-		[ValidateAntiForgeryToken]
+		//[ValidateAntiForgeryToken]
 		public IActionResult Edit(StudentViewModel studentVM)
 		{
+			studentVM.ImageName = TempData["ImageName"] as string;
 			if (!ModelState.IsValid)
 				return View(studentVM);
 
@@ -101,13 +110,17 @@ namespace ITI.PL.Controllers
 		[HttpPost]
 		public IActionResult Delete(StudentViewModel studentVM)
 		{
+			studentVM.ImageName = TempData["ImageName"] as string;
 			var student = _mapper.Map<StudentViewModel, Student>(studentVM);
 			_unitOfWork.Repository<Student>().Delete(student);
 			TempData["Message"] = "Student Deleted Successfully";
 
 			var count = _unitOfWork.Complete();
 			if (count > 0)
+			{
+				DocumentSetting.DeleteFile(studentVM.ImageName!, "Images");
 				return RedirectToAction(nameof(Index));
+			}
 
 			return View(studentVM);
 		}
