@@ -11,10 +11,13 @@
 <br />
 
 <form asp-action="Edit" enctype="multipart/form-data">
-	<div class="form-group d-flex justify-content-center align-items-center">
-		<img src="~/Files/Images/@Model.ImageName" alt="@Model.FirstName @Model.LastName" class="img-fluid rounded-circle w-25" />
-	</div>
-	<partial name="PartialViews/_StudentCreateAndEditPartial"></partial>
+	@if (Model.Image is not null)
+	{
+		<div class="form-group d-flex justify-content-center align-items-center">
+			<img src="~/Files/Images/@Model.ImageName" alt="@Model.FirstName @Model.LastName" class="img-fluid rounded-circle w-25" />
+		</div>
+	}
+		<partial name="PartialViews/_StudentCreateAndEditPartial"></partial>
 	
 	<div class="form-group mt-3">
 		<input type="submit" value="Save" class="btn btn-primary" /> |

@@ -40,9 +40,13 @@ namespace ITI.PL.Controllers
 		[HttpPost]
 		public IActionResult Create(StudentViewModel studentVM)
 		{
-			var imageName = DocumentSetting.UploadFile(studentVM.Image, "Images");
+			if (studentVM.Image is not null)
+			{
+				var imageName = DocumentSetting.UploadFile(studentVM.Image, "Images");
 
-			studentVM.ImageName = imageName;
+				studentVM.ImageName = imageName;
+			}
+
 
 			if (ModelState.IsValid)
 			{
@@ -118,7 +122,9 @@ namespace ITI.PL.Controllers
 			var count = _unitOfWork.Complete();
 			if (count > 0)
 			{
-				DocumentSetting.DeleteFile(studentVM.ImageName!, "Images");
+				if (studentVM.ImageName is not null)
+					DocumentSetting.DeleteFile(studentVM.ImageName!, "Images");
+
 				return RedirectToAction(nameof(Index));
 			}
 

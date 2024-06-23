@@ -52,7 +52,14 @@
 			{
 				<tr>
 					<td>
+						@if (student.ImageName is not null)
+						{
 							<img src="~/Files/Images/@student.ImageName" alt="@student.FirstName @student.LastName" class="img-fluid rounded-circle w-50" />
+						}
+						else
+						{
+							<p>Not Avelable</p>
+						}
 					</td>
 					<td>@student.FirstName</td>
 					<td>@student.LastName</td>
