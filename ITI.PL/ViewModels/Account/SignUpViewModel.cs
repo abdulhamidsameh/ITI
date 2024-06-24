@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ITI.PL.ViewModels.User
+namespace ITI.PL.ViewModels.Account
 {
 	public class SignUpViewModel
 	{
