@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using ITI.DAL.Models;
-using ITI.PL.ViewModels;
+using ITI.PL.ViewModels.Department;
 using ITI.PL.ViewModels.Student;
+using ITI.PL.ViewModels.User;
+using Microsoft.AspNetCore.Identity;
 
 namespace ITI.PL.Helpers
 {

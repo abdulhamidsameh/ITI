@@ -1,4 +1,6 @@
 ﻿using ITI.DAL.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ITI.DAL.Data
 {
-	public class ApplicationDbContext : DbContext
+	public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 	{
 		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
 			: base(options)
@@ -18,6 +20,7 @@ namespace ITI.DAL.Data
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
+			base.OnModelCreating(modelBuilder);
 			modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 		}
 		public DbSet<Course> Courses { get; set; }
@@ -27,5 +30,5 @@ namespace ITI.DAL.Data
 		public DbSet<Student> Students { get; set; }
 		public DbSet<StudentCourse> StudentCourses { get; set; }
 		public DbSet<Topic> Topics { get; set; }
-	}
+    }
 }
