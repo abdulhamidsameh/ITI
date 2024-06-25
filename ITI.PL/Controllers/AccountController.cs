@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
 using ITI.DAL.Models;
+using ITI.PL.Services.EmailSender;
 using ITI.PL.ViewModels.Account;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
+using NuGet.Common;
 // P@ssw0rd
 namespace ITI.PL.Controllers
 {
@@ -10,13 +13,19 @@ namespace ITI.PL.Controllers
 	{
 		private readonly UserManager<ApplicationUser> _userManager;
 		private readonly SignInManager<ApplicationUser> _signInManager;
+		private readonly IEmailSender _emailSender;
+		private readonly IConfiguration _configuration;
 
 		public AccountController(UserManager<ApplicationUser> userManager,
-			SignInManager<ApplicationUser> signInManager
+			SignInManager<ApplicationUser> signInManager,
+			IEmailSender emailSender,
+			IConfiguration configuration
 			)
 		{
 			_userManager = userManager;
 			_signInManager = signInManager;
+			_emailSender = emailSender;
+			_configuration = configuration;
 		}
 
 		#region Sign Up
@@ -119,6 +128,81 @@ namespace ITI.PL.Controllers
 		{
 			await _signInManager.SignOutAsync();
 			return RedirectToAction(nameof(SignIn));
+		}
+
+		#endregion
+
+		#region Forget Password
+
+		[HttpGet]
+		public IActionResult ForgetPassword()
+		{
+			return View();
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> ForgetPassword(ForgetPasswordViewModel model)
+		{
+			if (ModelState.IsValid)
+			{
+				var user = await _userManager.FindByEmailAsync(model.Email);
+				if (user is not null)
+				{
+
+					var resetPasswordToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+					var resetBssswordURL = Url.Action("ResetPassword", "Account", new { email = model.Email, token = resetPasswordToken },"https", "localhost:7103");
+
+					await _emailSender.SendAsync(
+						from: _configuration["EmailSettings:SenderEmail"],
+						recipients: model.Email,
+						subject: "reset your password",
+						body: resetBssswordURL
+						);
+
+					return RedirectToAction(nameof(CheckYourInbox));
+				}
+				ModelState.AddModelError(string.Empty, "Not Have an Account");
+			}
+			return View(model);
+		}
+
+		[HttpGet]
+		public IActionResult CheckYourInbox()
+		{
+			return View();
+		}
+
+		[HttpGet]
+		public IActionResult ResetPassword(string email, string token)
+		{
+			TempData["Email"] = email;
+			TempData["Token"] = token;
+			return View();
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+		{
+			var email = TempData["Email"] as string; 
+			var token = TempData["Token"] as string; 
+			if (ModelState.IsValid)
+			{
+				var user = await _userManager.FindByEmailAsync(email);
+				if (user is not null)
+				{
+
+					var result = await _userManager.ResetPasswordAsync(user, token, model.NewPassword);
+					if (result.Succeeded)
+						RedirectToAction(nameof(SignIn));
+
+					ModelState.AddModelError(string.Empty, "Has Error Been Occured");
+
+				}
+				else
+					ModelState.AddModelError(string.Empty, "URL is not Valid");
+			}
+			return View(model);
 		}
 
 		#endregion

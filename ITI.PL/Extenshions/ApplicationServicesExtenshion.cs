@@ -4,6 +4,7 @@ using ITI.BLL.Repositories;
 using ITI.DAL.Data;
 using ITI.DAL.Models;
 using ITI.PL.Helpers;
+using ITI.PL.Services.EmailSender;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Internal;
 
@@ -33,7 +34,8 @@ namespace ITI.PL.Extenshions
 
 				options.User.RequireUniqueEmail = true;
 
-			}).AddEntityFrameworkStores<ApplicationDbContext>();
+			}).AddEntityFrameworkStores<ApplicationDbContext>()
+			.AddDefaultTokenProviders();
 
 
 			services.ConfigureApplicationCookie(options =>
@@ -42,6 +44,7 @@ namespace ITI.PL.Extenshions
 				options.LoginPath = "/Account/SignIn";
 				options.ExpireTimeSpan = TimeSpan.FromDays(1);
 			});
+			services.AddTransient<IEmailSender, EmailSender>();
 
 			return services;
 		}
