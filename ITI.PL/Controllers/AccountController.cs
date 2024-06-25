@@ -112,5 +112,16 @@ namespace ITI.PL.Controllers
 
 		#endregion
 
+		#region Sign Out
+
+		[HttpGet]
+		public new async Task<IActionResult> SignOut()
+		{
+			await _signInManager.SignOutAsync();
+			return RedirectToAction(nameof(SignIn));
+		}
+
+		#endregion
+
 	}
 }

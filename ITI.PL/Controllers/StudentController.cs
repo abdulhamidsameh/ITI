@@ -3,11 +3,13 @@ using ITI.BLL.Interfaces;
 using ITI.DAL.Models;
 using ITI.PL.Helpers;
 using ITI.PL.ViewModels.Student;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Reflection.Metadata;
 
 namespace ITI.PL.Controllers
 {
+	[Authorize]
 	public class StudentController : Controller
 	{
 		private readonly IUnitOfWork _unitOfWork;

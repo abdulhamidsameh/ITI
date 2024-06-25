@@ -35,6 +35,14 @@ namespace ITI.PL.Extenshions
 
 			}).AddEntityFrameworkStores<ApplicationDbContext>();
 
+
+			services.ConfigureApplicationCookie(options =>
+			{
+				options.AccessDeniedPath = "/Home/error";
+				options.LoginPath = "/Account/SignIn";
+				options.ExpireTimeSpan = TimeSpan.FromDays(1);
+			});
+
 			return services;
 		}
 	}

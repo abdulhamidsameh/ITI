@@ -3,10 +3,12 @@ using ITI.BLL.Interfaces;
 using ITI.DAL.Models;
 using ITI.PL.ViewModels;
 using ITI.PL.ViewModels.Department;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ITI.PL.Controllers
 {
+	[Authorize]
 	public class DepartmentController : Controller
 	{
 		private readonly IUnitOfWork _unitOfWork;
