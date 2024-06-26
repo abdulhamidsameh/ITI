@@ -1,4 +1,5 @@
 ﻿using ITI.DAL.Models;
+using ITI.PL.ViewModels.Instructor;
 using ITI.PL.ViewModels.Student;
 using System.ComponentModel.DataAnnotations;
 
@@ -20,14 +21,14 @@ namespace ITI.PL.ViewModels.Department
 
 
         // NP
-        virtual public ICollection<StudentViewModel> Students { get; set; } = new HashSet<StudentViewModel>();
+       // virtual public ICollection<StudentViewModel> Students { get; set; } = new HashSet<StudentViewModel>();
 
         // NP
-        virtual public ICollection<Instructor> Instructors { get; set; } = new HashSet<Instructor>();
+        //virtual public ICollection<InstructorViewModel> Instructors { get; set; } = new HashSet<InstructorViewModel>();
 
         // FK
         public int? InstructorId { get; set; }
-        virtual public Instructor? Instructor { get; set; } = null!;
+        virtual public InstructorViewModel? Instructor { get; set; } = null!;
 
     }
 }

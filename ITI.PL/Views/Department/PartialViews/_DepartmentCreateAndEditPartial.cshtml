@@ -1,4 +1,8 @@
 ﻿@model DepartmentViewModel
+@inject IUnitOfWork _unitOfWork
+@{
+	var instructors = new SelectList(_unitOfWork.Repository<Instructor>().GetAll(), nameof(Instructor.Id), nameof(Instructor.Name));
+}
 @*
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
@@ -20,5 +24,16 @@
 	<label class="col-form-label" asp-for="DateOfCreation"></label>
 	<input asp-for="DateOfCreation" class="form-control" />
 	<span asp-validation-for="DateOfCreation" class="text-danger"></span>
+
+</div>
+
+
+<div class="form-group">
+	<label class="col-form-label" asp-for="Instructor"></label>
+	<select class="form-control" asp-for="InstructorId" asp-items="instructors">
+
+		<option value="@null"> -- Select Instructor --</option>
+
+	</select>
 
 </div>

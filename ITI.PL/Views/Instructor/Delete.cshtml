@@ -1,0 +1,22 @@
+﻿@model InstructorViewModel
+@{
+    ViewData["Title"] = "Delete Instructor";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<h1>Are You Sure To Delete This Instructor?</h1>
+
+<br />
+<br />
+
+<form asp-action="Delete">
+	<partial name="PartialViews/_InstructorDeleteAndDetailsPartial"></partial>
+
+	<div class="form-group mt-3">
+		<input type="submit" value="Delete" class="btn btn-danger" /> |
+		<a asp-action="Index" class="btn btn-light">Cancle</a>
+	</div>
+
+</form>

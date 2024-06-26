@@ -11,6 +11,6 @@ namespace ITI.DAL.Models
 		public string Name { get; set; } = null!;
 
 		// NP
-		virtual public ICollection<Course> Courses { get; set; } = new HashSet<Course>();
+		virtual public ICollection<Course>? Courses { get; set; } = new HashSet<Course>();
     }
 }
