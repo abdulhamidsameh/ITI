@@ -151,7 +151,7 @@ namespace ITI.PL.Controllers
 
 					var resetPasswordToken = await _userManager.GeneratePasswordResetTokenAsync(user);
 
-					var resetBssswordURL = Url.Action("ResetPassword", "Account", new { email = model.Email, token = resetPasswordToken },"https", "localhost:7103");
+					var resetBssswordURL = Url.Action("ResetPassword", "Account", new { email = model.Email, token = resetPasswordToken }, "https", "localhost:7103");
 
 					await _emailSender.SendAsync(
 						from: _configuration["EmailSettings:SenderEmail"],
@@ -184,20 +184,16 @@ namespace ITI.PL.Controllers
 		[HttpPost]
 		public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
 		{
-			var email = TempData["Email"] as string; 
-			var token = TempData["Token"] as string; 
+
 			if (ModelState.IsValid)
 			{
+				var email = TempData["Email"] as string;
+				var token = TempData["Token"] as string;
 				var user = await _userManager.FindByEmailAsync(email);
 				if (user is not null)
 				{
-
 					var result = await _userManager.ResetPasswordAsync(user, token, model.NewPassword);
-					if (result.Succeeded)
-						RedirectToAction(nameof(SignIn));
-
-					ModelState.AddModelError(string.Empty, "Has Error Been Occured");
-
+					RedirectToAction(nameof(SignIn));
 				}
 				else
 					ModelState.AddModelError(string.Empty, "URL is not Valid");

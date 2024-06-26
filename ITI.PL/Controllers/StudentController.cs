@@ -9,7 +9,6 @@ using System.Reflection.Metadata;
 
 namespace ITI.PL.Controllers
 {
-	[Authorize]
 	public class StudentController : Controller
 	{
 		private readonly IUnitOfWork _unitOfWork;

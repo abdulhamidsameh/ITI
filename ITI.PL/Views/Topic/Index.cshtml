@@ -1,0 +1,58 @@
+﻿@model IEnumerable<Topic>
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<h1>All Topics</h1>
+
+<br />
+<br />
+@if (TempData["Message"] is not null)
+{
+	<div id="myDiv">
+		<div class="alert alert-success d-flex justify-content-between align-items-center">
+			<div>@TempData["Message"]</div>
+			<div><button onclick="Change()" id="btn" class="btn"><i class="fa-solid fa-xmark"></i></button></div>
+		</div>
+	</div>
+}
+<a class="btn btn-primary" asp-controller="Topic" asp-action="Create">Create New Topic</a>
+
+<br />
+
+@if (Model.Count() > 0)
+{
+	<table class="mt-3 table table-striped table-hover">
+
+		<thead>
+
+			<tr>
+				<th>@Html.DisplayNameFor(T => T.Name)</th>
+				<td>Details</td>
+				<td>Update</td>
+				<td>Delete</td>
+			</tr>
+
+		</thead>
+
+		<tbody>
+
+			@foreach (var topic in Model)
+			{
+				<tr>
+					<td>@topic.Name</td>
+					<partial name="_ButtonsPartial" model="topic.Id"></partial>
+				</tr>
+			}
+
+		</tbody>
+
+	</table>
+}
+else
+{
+	<div class="mt-4 alert alert-warning">
+		<h3>There Is No Topics :(</h3>
+	</div>
+}

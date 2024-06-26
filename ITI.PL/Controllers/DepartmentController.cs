@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ITI.PL.Controllers
 {
-	[Authorize]
 	public class DepartmentController : Controller
 	{
 		private readonly IUnitOfWork _unitOfWork;
