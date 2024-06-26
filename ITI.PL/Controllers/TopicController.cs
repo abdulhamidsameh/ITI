@@ -22,7 +22,8 @@ namespace ITI.PL.Controllers
 		public IActionResult Index()
 		{
 			var topics = _unitOfWork.Repository<Topic>().GetAll();
-			return View(topics);
+			var topicsVM = _mapper.Map<IEnumerable<Topic>, IEnumerable<TopicViewModel>>(topics);
+			return View(topicsVM);
 		}
 
 		[HttpGet]
@@ -111,7 +112,7 @@ namespace ITI.PL.Controllers
 
 			var count = _unitOfWork.Complete();
 
-			if(count > 0)
+			if (count > 0)
 				return RedirectToAction(nameof(Index));
 
 

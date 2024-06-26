@@ -1,0 +1,37 @@
+﻿@model CourseViewModel
+@inject IUnitOfWork _unitOfWork
+@{
+	var Topics = new SelectList(_unitOfWork.Repository<Topic>().GetAll(), nameof(Topic.Id), nameof(Topic.Name));
+}
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+<div class="form-group">
+	<label class="col-form-label" asp-for="Name"></label>
+	<input asp-for="Name" class="form-control" />
+	<span asp-validation-for="Name" class="text-danger"></span>
+</div>
+
+<div class="form-group">
+	<label class="col-form-label" asp-for="Duration"></label>
+	<input asp-for="Duration" class="form-control" />
+	<span asp-validation-for="Duration" class="text-danger"></span>
+</div>
+
+<div class="form-group">
+	<label class="col-form-label" asp-for="Description"></label>
+	<input asp-for="Description" class="form-control" />
+	<span asp-validation-for="Description" class="text-danger"></span>
+
+</div>
+
+
+<div class="form-group">
+	<label class="col-form-label" asp-for="Topic"></label>
+	<select class="form-control" asp-for="TopicId" asp-items="Topics">
+
+		<option value="@null"> -- Select Topic --</option>
+
+	</select>
+
+</div>
