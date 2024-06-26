@@ -13,9 +13,9 @@ namespace ITI.DAL.Models
 		public string Description { get; set; } = null!;
 
 		// FK
-		public int TopicId { get; set; }
+		public int? TopicId { get; set; }
 		// NP
-		virtual public Topic Topic { get; set; } = null!;
+		virtual public Topic? Topic { get; set; } = null!;
 
 		//NP
 		virtual public ICollection<CourseInstructor> Instructors { get; set; } = new HashSet<CourseInstructor>();

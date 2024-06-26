@@ -1,0 +1,23 @@
+﻿@model CourseViewModel
+@{
+    ViewData["Title"] = "Create Course";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Create New Course</h1>
+
+<br />
+<br />
+
+<form asp-action="Create">
+	<partial name="PartialViews/_CourseCreateAndEditPartial"></partial>
+	<div class="form-group mt-3">
+		<input type="submit" value="Create" class="btn btn-primary" /> |
+		<a asp-action="Index" class="btn btn-light">Back To List</a>
+	</div>
+
+</form>
+
+@section ValidationScriptSection {
+	<partial name="_ValidationScriptsPartial"></partial>
+}
