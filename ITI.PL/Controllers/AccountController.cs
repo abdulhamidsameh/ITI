@@ -3,6 +3,8 @@ using ITI.DAL.Models;
 using ITI.PL.Services.EmailSender;
 using ITI.PL.Services.SmsMessage;
 using ITI.PL.ViewModels.Account;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
@@ -226,8 +228,8 @@ namespace ITI.PL.Controllers
 
 					var sms = new SmsMessage()
 					{
-						Body = resetBssswordURL,
-						PhoneNumber = user.PhoneNumber
+						Body = resetBssswordURL!,
+						PhoneNumber = user.PhoneNumber!
 
 					};
 
@@ -243,6 +245,41 @@ namespace ITI.PL.Controllers
 		}
 
 
+
+		#endregion
+
+
+		#region Google Login
+
+		public IActionResult GoogleLogin()
+		{
+			var prop = new AuthenticationProperties()
+			{
+				RedirectUri = Url.Action("GoogleResponse"),
+			};
+
+			return Challenge(prop,GoogleDefaults.AuthenticationScheme);
+		}
+
+		public async Task<IActionResult> GoogleResponse()
+		{
+
+			var result = await HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
+			var claims = result.Principal.Identities.FirstOrDefault().Claims.Select(
+
+				claim => new
+				{
+					claim.Issuer,
+					claim.OriginalIssuer,
+					claim.Type,
+					claim.Value
+				}
+
+				);
+
+			return RedirectToAction("Index", "Home");
+
+		}
 
 		#endregion
 
