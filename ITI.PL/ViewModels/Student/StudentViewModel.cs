@@ -38,8 +38,7 @@ namespace ITI.PL.ViewModels.Student
         [Display(Name = "Is Active")]
         public bool IsActive { get; set; }
 
-        [RegularExpression(@"^01[0125][0-9]{8}$",
-        ErrorMessage = "Please enter correct email address")]
+        
         [Required]
         [Phone]
         public string PhoneNumber { get; set; } = null!;

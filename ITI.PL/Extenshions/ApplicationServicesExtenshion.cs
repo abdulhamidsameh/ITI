@@ -5,6 +5,8 @@ using ITI.DAL.Data;
 using ITI.DAL.Models;
 using ITI.PL.Helpers;
 using ITI.PL.Services.EmailSender;
+using ITI.PL.Services.SmsMessage;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Internal;
 
@@ -12,8 +14,12 @@ namespace ITI.PL.Extenshions
 {
 	public static class ApplicationServicesExtenshion
 	{
-		public static IServiceCollection ApplicationServices(this IServiceCollection services)
+
+		public static IServiceCollection ApplicationServices(this IServiceCollection services,IConfiguration configuration)
 		{
+
+			
+
 			services.AddControllersWithViews();
 
 			services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -45,6 +51,19 @@ namespace ITI.PL.Extenshions
 				options.ExpireTimeSpan = TimeSpan.FromDays(1);
 			});
 			services.AddTransient<IEmailSender, EmailSender>();
+
+			services.AddTransient<ISmsServices, SmsServices>();
+
+			services.AddAuthentication(options =>
+			{
+				options.DefaultAuthenticateScheme = GoogleDefaults.AuthenticationScheme;
+				options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+			}).AddGoogle(options =>
+			{
+				IConfiguration googleConfigration = configuration.GetSection("External");
+				options.ClientId = googleConfigration["ClientId"]!;
+				options.ClientSecret = googleConfigration["ClientSecret"]!;
+			});
 
 			return services;
 		}

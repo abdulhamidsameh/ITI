@@ -22,7 +22,7 @@ namespace ITI.PL
 					options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")).UseLazyLoadingProxies();
 				});
 
-			builder.Services.ApplicationServices();
+			builder.Services.ApplicationServices(builder.Configuration);
 
 			var app = builder.Build();
 
