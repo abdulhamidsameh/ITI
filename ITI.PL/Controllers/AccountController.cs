@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ITI.DAL.Models;
 using ITI.PL.Services.EmailSender;
+using ITI.PL.Services.SmsMessage;
 using ITI.PL.ViewModels.Account;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -15,17 +16,20 @@ namespace ITI.PL.Controllers
 		private readonly SignInManager<ApplicationUser> _signInManager;
 		private readonly IEmailSender _emailSender;
 		private readonly IConfiguration _configuration;
+		private readonly ISmsServices _smsServices;
 
 		public AccountController(UserManager<ApplicationUser> userManager,
 			SignInManager<ApplicationUser> signInManager,
 			IEmailSender emailSender,
-			IConfiguration configuration
+			IConfiguration configuration,
+			ISmsServices smsServices
 			)
 		{
 			_userManager = userManager;
 			_signInManager = signInManager;
 			_emailSender = emailSender;
 			_configuration = configuration;
+			_smsServices = smsServices;
 		}
 
 		#region Sign Up
@@ -154,10 +158,10 @@ namespace ITI.PL.Controllers
 					var resetBssswordURL = Url.Action("ResetPassword", "Account", new { email = model.Email, token = resetPasswordToken }, "https", "localhost:7103");
 
 					await _emailSender.SendAsync(
-						from: _configuration["EmailSettings:SenderEmail"],
+						from: _configuration["EmailSettings:SenderEmail"]!,
 						recipients: model.Email,
 						subject: "reset your password",
-						body: resetBssswordURL
+						body: resetBssswordURL!
 						);
 
 					return RedirectToAction(nameof(CheckYourInbox));
@@ -189,10 +193,10 @@ namespace ITI.PL.Controllers
 			{
 				var email = TempData["Email"] as string;
 				var token = TempData["Token"] as string;
-				var user = await _userManager.FindByEmailAsync(email);
+				var user = await _userManager.FindByEmailAsync(email!);
 				if (user is not null)
 				{
-					var result = await _userManager.ResetPasswordAsync(user, token, model.NewPassword);
+					var result = await _userManager.ResetPasswordAsync(user, token!, model.NewPassword);
 					RedirectToAction(nameof(SignIn));
 				}
 				else
@@ -200,6 +204,45 @@ namespace ITI.PL.Controllers
 			}
 			return View(model);
 		}
+
+		#endregion
+
+		#region Send Sms
+
+
+
+		[HttpPost]
+		public async Task<IActionResult> SendSms(ForgetPasswordViewModel model)
+		{
+			if (ModelState.IsValid)
+			{
+				var user = await _userManager.FindByEmailAsync(model.Email);
+				if (user is not null)
+				{
+
+					var resetPasswordToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+					var resetBssswordURL = Url.Action("ResetPassword", "Account", new { email = model.Email, token = resetPasswordToken }, "https", "localhost:7103");
+
+					var sms = new SmsMessage()
+					{
+						Body = resetBssswordURL,
+						PhoneNumber = user.PhoneNumber
+
+					};
+
+					 _smsServices.Send(
+						sms
+						);
+
+					return RedirectToAction(nameof(CheckYourInbox));
+				}
+				ModelState.AddModelError(string.Empty, "Not Have an Account");
+			}
+			return View(model);
+		}
+
+
 
 		#endregion
 

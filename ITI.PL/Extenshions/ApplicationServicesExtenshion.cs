@@ -5,6 +5,7 @@ using ITI.DAL.Data;
 using ITI.DAL.Models;
 using ITI.PL.Helpers;
 using ITI.PL.Services.EmailSender;
+using ITI.PL.Services.SmsMessage;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Internal;
 
@@ -45,6 +46,8 @@ namespace ITI.PL.Extenshions
 				options.ExpireTimeSpan = TimeSpan.FromDays(1);
 			});
 			services.AddTransient<IEmailSender, EmailSender>();
+
+			services.AddTransient<ISmsServices, SmsServices>();
 
 			return services;
 		}
