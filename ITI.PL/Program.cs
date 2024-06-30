@@ -11,7 +11,7 @@ namespace ITI.PL
 {
 	public class Program
 	{
-		public static void Main(string[] args)
+		public static async Task Main(string[] args)
 		{
 			var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +25,27 @@ namespace ITI.PL
 			builder.Services.ApplicationServices(builder.Configuration);
 
 			var app = builder.Build();
+
+			var scope = app.Services.CreateScope();
+
+			var services = scope.ServiceProvider;
+
+			var _dbcontext = services.GetRequiredService<ApplicationDbContext>();
+
+			var _loogerFactory = services.GetRequiredService<ILoggerFactory>();
+
+			try
+			{
+				await _dbcontext.Database.MigrateAsync();
+			}
+			catch (Exception ex)
+			{
+
+				var logger = _loogerFactory.CreateLogger<Program>();
+				logger.LogError(ex, "an Error Has Been Occured during applay Database");
+			}
+
+
 
 			// Configure the HTTP request pipeline.
 			if (!app.Environment.IsDevelopment())

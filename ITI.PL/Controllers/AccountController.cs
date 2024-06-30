@@ -265,7 +265,7 @@ namespace ITI.PL.Controllers
 		{
 
 			var result = await HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
-			var claims = result.Principal.Identities.FirstOrDefault().Claims.Select(
+			var claims = result.Principal!.Identities.FirstOrDefault()!.Claims.Select(
 
 				claim => new
 				{
