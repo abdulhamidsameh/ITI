@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ITI.BLL.Interfaces;
+using ITI.BLL.Specifications;
 using ITI.DAL.Models;
 using ITI.PL.ViewModels.Instructor;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +22,11 @@ namespace ITI.PL.Controllers
 		[HttpGet]
 		public IActionResult Index()
 		{
-			var Instructors = _unitOfWork.Repository<Instructor>().GetAll();
+			var spec = new BaseSpecifications<Instructor>();
+			spec.Includes.Add(I => I.Department!);
+			spec.Includes.Add(I => I.Courses);
+
+			var Instructors = _unitOfWork.Repository<Instructor>().GetWithSpecAll(spec);
 
 			var InstructorsVM = _mapper.Map<IEnumerable<Instructor>, IEnumerable<InstructorViewModel>>(Instructors);
 
@@ -60,7 +65,11 @@ namespace ITI.PL.Controllers
 			if (!id.HasValue)
 				return BadRequest();
 
-			var instructor = _unitOfWork.Repository<Instructor>().Get(id.Value);
+			var spec = new BaseSpecifications<Instructor>(I => I.Id == id.Value);
+			spec.Includes.Add(I => I.Department!);
+			spec.Includes.Add(I => I.Courses);
+
+			var instructor = _unitOfWork.Repository<Instructor>().GetWithSpec(spec);
 
 			if (instructor is null)
 				return NotFound();

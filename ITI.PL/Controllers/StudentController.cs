@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ITI.BLL.Interfaces;
+using ITI.BLL.Specifications;
 using ITI.DAL.Models;
 using ITI.PL.Helpers;
 using ITI.PL.ViewModels.Student;
@@ -26,7 +27,10 @@ namespace ITI.PL.Controllers
 		[HttpGet]
 		public IActionResult Index()
 		{
-			var students = _unitOfWork.Repository<Student>().GetAll();
+			var spec = new BaseSpecifications<Student>();
+			spec.Includes.Add(S => S.Department!);
+			spec.Includes.Add(S => S.Courses);
+			var students = _unitOfWork.Repository<Student>().GetWithSpecAll(spec);
 			var studentsVM = _mapper.Map<IEnumerable<Student>, IEnumerable<StudentViewModel>>(students);
 			return View(studentsVM);
 		}
@@ -69,7 +73,12 @@ namespace ITI.PL.Controllers
 		{
 			if (!id.HasValue)
 				return BadRequest();
-			var student = _unitOfWork.Repository<Student>().Get(id.Value);
+
+			var spec = new BaseSpecifications<Student>(S => S.Id == id.Value);
+			spec.Includes.Add(S => S.Department!);
+			spec.Includes.Add(S => S.Courses);
+
+			var student = _unitOfWork.Repository<Student>().GetWithSpec(spec);
 
 			if (student is null)
 				return NotFound();

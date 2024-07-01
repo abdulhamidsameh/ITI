@@ -1,4 +1,5 @@
 ﻿using ITI.BLL.Interfaces;
+using ITI.BLL.Specifications;
 using ITI.DAL.Data;
 using ITI.DAL.Models;
 using Microsoft.EntityFrameworkCore;
@@ -35,6 +36,16 @@ namespace ITI.BLL.Repositories
 		public IEnumerable<T> GetAll()
 		{
 			return _dbContext.Set<T>().AsNoTracking().ToList();
+		}
+
+		public T GetWithSpec(ISpecifications<T> spec)
+		{
+			return SpecificationsEvaluator<T>.GetQuery(_dbContext.Set<T>(), spec).FirstOrDefault()!;
+		}
+
+		public IEnumerable<T> GetWithSpecAll(ISpecifications<T> spec)
+		{
+			return SpecificationsEvaluator<T>.GetQuery(_dbContext.Set<T>(), spec);
 		}
 
 		public void Update(T entity)

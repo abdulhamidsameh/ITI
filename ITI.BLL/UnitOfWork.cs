@@ -36,7 +36,7 @@ namespace ITI.BLL
 			{
 				if (key == nameof(Student))
 				{
-					var repo = new StudentRepository(_dbContext);
+					var repo = new GenericRepository<Student>(_dbContext);
 					_repositories.Add(key, repo);
 				}
 				else
