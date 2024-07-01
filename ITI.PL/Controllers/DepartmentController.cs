@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ITI.BLL.Interfaces;
+using ITI.BLL.Specifications;
 using ITI.DAL.Models;
 using ITI.PL.ViewModels;
 using ITI.PL.ViewModels.Department;
@@ -25,7 +26,11 @@ namespace ITI.PL.Controllers
 		[HttpGet]
 		public IActionResult Index()
 		{
-			var departments = _unitOfWork.Repository<Department>().GetAll();
+			var spec = new BaseSpecifications<Department>();
+			spec.Includes.Add(D => D.Instructors);
+			spec.Includes.Add(D => D.Students);
+			spec.Includes.Add(D => D.Instructor!);
+			var departments = _unitOfWork.Repository<Department>().GetWithSpecAll(spec);
 			var departmentsVM = _mapper.Map<IEnumerable<Department>, IEnumerable<DepartmentViewModel>>(departments);
 			return View(departmentsVM);
 		}
@@ -60,7 +65,12 @@ namespace ITI.PL.Controllers
 			if (!id.HasValue)
 				return BadRequest();
 
-			var department = _unitOfWork.Repository<Department>().Get(id.Value);
+			var spec = new BaseSpecifications<Department>(D => D.Id == id.Value);
+			spec.Includes.Add(D => D.Instructors);
+			spec.Includes.Add(D => D.Students);
+			spec.Includes.Add(D => D.Instructor!);
+			
+			var department = _unitOfWork.Repository<Department>().GetWithSpec(spec);
 
 			if (department is null)
 				return NotFound();
