@@ -2,6 +2,7 @@
 using ITI.BLL.Interfaces;
 using ITI.BLL.Specifications;
 using ITI.DAL.Models;
+using ITI.PL.ViewModels;
 using ITI.PL.ViewModels.Instructor;
 using Microsoft.AspNetCore.Mvc;
 
@@ -63,7 +64,7 @@ namespace ITI.PL.Controllers
 		public IActionResult Details(int? id, string ViewName = "Details")
 		{
 			if (!id.HasValue)
-				return BadRequest();
+				return BadRequest(new ErrorViewModel(400));
 
 			var spec = new BaseSpecifications<Instructor>(I => I.Id == id.Value);
 			spec.Includes.Add(I => I.Department!);
@@ -72,7 +73,7 @@ namespace ITI.PL.Controllers
 			var instructor = _unitOfWork.Repository<Instructor>().GetWithSpec(spec);
 
 			if (instructor is null)
-				return NotFound();
+				return NotFound(new ErrorViewModel(404, "Instructor Was Not Found"));
 
 			var instructorVM = _mapper.Map<Instructor, InstructorViewModel>(instructor);
 
