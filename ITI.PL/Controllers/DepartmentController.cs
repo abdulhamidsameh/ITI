@@ -63,7 +63,7 @@ namespace ITI.PL.Controllers
 		public IActionResult Details(int? id, string viewName = "Details")
 		{
 			if (!id.HasValue)
-				return BadRequest();
+				return BadRequest(new ErrorViewModel(400));
 
 			var spec = new BaseSpecifications<Department>(D => D.Id == id.Value);
 			spec.Includes.Add(D => D.Instructors);
@@ -73,7 +73,7 @@ namespace ITI.PL.Controllers
 			var department = _unitOfWork.Repository<Department>().GetWithSpec(spec);
 
 			if (department is null)
-				return NotFound();
+				return NotFound(new ErrorViewModel(404, "Department Was Not Found"));
 
 			var departmentVM = _mapper.Map<Department, DepartmentViewModel>(department);
 

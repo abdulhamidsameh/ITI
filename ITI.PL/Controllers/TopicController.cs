@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ITI.BLL.Interfaces;
 using ITI.DAL.Models;
+using ITI.PL.ViewModels;
 using ITI.PL.ViewModels.Topic;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,6 +23,8 @@ namespace ITI.PL.Controllers
 		public IActionResult Index()
 		{
 			var topics = _unitOfWork.Repository<Topic>().GetAll();
+			int x = 5, y = 0;
+			int a = x / y;
 			var topicsVM = _mapper.Map<IEnumerable<Topic>, IEnumerable<TopicViewModel>>(topics);
 			return View(topicsVM);
 		}
@@ -56,12 +59,12 @@ namespace ITI.PL.Controllers
 		public IActionResult Details(int? id, string ViewName = "Details")
 		{
 			if (!id.HasValue)
-				return BadRequest();
+				return BadRequest(new ErrorViewModel(400));
 
 			var Topic = _unitOfWork.Repository<Topic>().Get(id.Value);
 
 			if (Topic is null)
-				return NotFound();
+				return NotFound(new ErrorViewModel(404, "Topic Was Not Found"));
 
 			var TopicVM = _mapper.Map<Topic, TopicViewModel>(Topic);
 

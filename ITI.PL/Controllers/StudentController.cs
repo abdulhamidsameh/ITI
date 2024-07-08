@@ -3,6 +3,7 @@ using ITI.BLL.Interfaces;
 using ITI.BLL.Specifications;
 using ITI.DAL.Models;
 using ITI.PL.Helpers;
+using ITI.PL.ViewModels;
 using ITI.PL.ViewModels.Student;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -72,7 +73,7 @@ namespace ITI.PL.Controllers
 		public IActionResult Details(int? id, string viewName = "Details")
 		{
 			if (!id.HasValue)
-				return BadRequest();
+				return BadRequest(new ErrorViewModel(400));
 
 			var spec = new BaseSpecifications<Student>(S => S.Id == id.Value);
 			spec.Includes.Add(S => S.Department!);
@@ -81,7 +82,7 @@ namespace ITI.PL.Controllers
 			var student = _unitOfWork.Repository<Student>().GetWithSpec(spec);
 
 			if (student is null)
-				return NotFound();
+				return NotFound(new ErrorViewModel(404, "Student Was Not Found"));
 			var studentVM = _mapper.Map<Student, StudentViewModel>(student);
 			return View(viewName, studentVM);
 		}

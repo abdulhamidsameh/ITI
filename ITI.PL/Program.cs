@@ -2,6 +2,7 @@ using ITI.BLL.Interfaces;
 using ITI.BLL.Repositories;
 using ITI.DAL.Data;
 using ITI.PL.Extenshions;
+using ITI.PL.Middlewares;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Security.Cryptography;
@@ -46,6 +47,7 @@ namespace ITI.PL
 			}
 
 
+			app.UseMiddleware<ExceptionMiddleware>();
 
 			// Configure the HTTP request pipeline.
 			if (!app.Environment.IsDevelopment())
