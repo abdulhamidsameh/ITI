@@ -60,6 +60,8 @@ namespace ITI.PL
 			app.UseHttpsRedirection();
 			app.UseStaticFiles();
 
+			app.UseStatusCodePagesWithReExecute("home/error");
+
 			app.UseRouting();
 
 			app.UseAuthentication();
