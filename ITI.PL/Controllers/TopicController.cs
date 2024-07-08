@@ -23,6 +23,8 @@ namespace ITI.PL.Controllers
 		public IActionResult Index()
 		{
 			var topics = _unitOfWork.Repository<Topic>().GetAll();
+			int x = 5, y = 0;
+			int a = x / y;
 			var topicsVM = _mapper.Map<IEnumerable<Topic>, IEnumerable<TopicViewModel>>(topics);
 			return View(topicsVM);
 		}
